@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Self_Introduction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="js/includeHTML.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <style>
+      #app {
+        background-size: cover;
+      }
+      aside {
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" v-bind:style="{ backgroundImage: 'url(' + bgImg + ')' }">
+      <div class="d-flex vh-100">
+        <aside class="col-1 bg-dark">
+          <div class="vh-100 row align-items-center">
+            <my-component v-on:increase="receiveEvent"></my-component>
+          </div>
+        </aside>
+        <main
+          class="col-11 d-flex justify-content-center"
+          include-html=".\mainPage\Main01.html"
+        ></main>
+      </div>
+    </div>
+    <script>
+      includeHTML();
+
+      let MyComponent = Vue.component("my-component", {
+        template: `<ul class="nav flex-column ms-2">
+            <li class="nav-item">
+              <p class="nav-link" v-on:click="passEvent">01</p>
+            </li>
+            <li class="nav-item">
+              <p class="nav-link">02</p>
+            </li>
+            <li class="nav-item">
+              <p class="nav-link">03</p>
+            </li>
+            <li class="nav-item">
+              <p class="nav-link">04</p>
+            </li>
+          </ul>`,
+
+      methods : {
+        passEvent: function () {
+          this.$emit('change');
+        },
+			}
+      });
+
+      let app = new Vue({
+        el: "#app",
+        components: {
+          MyComponent,
+        },
+
+        data: {
+          bgImg: "../Self_Introduction/resource/bg1.jpeg",
+          now: 1,
+        },
+
+        methods: {
+          receiveEvent: function () {
+            this.now = 2;
+          },
+        },
+
+        watch: {
+          now: function (newVal, oldVal) {
+            this.bgImg = "../Self_Introduction/resource/bg" + newVal + ".jpeg";
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
